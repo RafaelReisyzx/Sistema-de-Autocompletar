@@ -25,6 +25,21 @@ typedef struct BinaryTreeNode {
     struct BinaryTreeNode* right;
 } BinaryTreeNode;
 
+typedef struct AVLTreeNode {
+    Word* word_node;
+    struct AVLTreeNode* left;
+    struct AVLTreeNode* right;
+    int height;
+} AVLTreeNode;
+
+AVLTreeNode* insertIntoAVLTree(AVLTreeNode* root, Word* word_node);
+AVLTreeNode* deleteMinFromAVLTree(AVLTreeNode* root);
+int getHeight(AVLTreeNode* node);
+int getBalanceFactor(AVLTreeNode* node);
+AVLTreeNode* rotateRight(AVLTreeNode* y);
+AVLTreeNode* rotateLeft(AVLTreeNode* x);
+AVLTreeNode* balanceAVLTree(AVLTreeNode* node);
+void printAVLTreeInOrder(AVLTreeNode* root);
 void initializeHashTable(HashTable* hash_table);
 void loadStopWords(HashTable* hash_table, const char* stop_words_file);
 unsigned long hashFunction(const char* str);
