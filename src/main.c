@@ -10,6 +10,7 @@ int main() {
 
     BinaryTreeNode* binaryTreeRoot = NULL;
     AVLTreeNode* avlTreeRoot = NULL;
+    HuffmanNode* huffmanTreeRoot = NULL;
     int treeSize = 0;
 
     for (int i = 0; i < TABLE_SIZE; i++) {
@@ -18,10 +19,12 @@ int main() {
             if (palavra_atual->frequency > 0) {
                 binaryTreeRoot = insertIntoBinaryTree(binaryTreeRoot, palavra_atual);
                 avlTreeRoot = insertIntoAVLTree(avlTreeRoot, palavra_atual);
+                huffmanTreeRoot = insertIntoHuffmanTree(huffmanTreeRoot, palavra_atual);
                 treeSize++;
                 if (treeSize > k) {
                     binaryTreeRoot = deleteMinFromBinaryTree(binaryTreeRoot);
                     avlTreeRoot = deleteMinFromAVLTree(avlTreeRoot);
+                    huffmanTreeRoot = deleteMinFromHuffmanTree(huffmanTreeRoot);
                     treeSize--;
                 }
             }
@@ -34,6 +37,9 @@ int main() {
 
     printf("\nTop %d palavras mais frequentes (Árvore AVL):\n", k);
     printAVLTreeInOrder(avlTreeRoot);
+
+    printf("\nTop %d palavras mais frequentes (Árvore Huffman):\n", k);
+    printHuffmanTree(huffmanTreeRoot);
 
     return 0;
 }
