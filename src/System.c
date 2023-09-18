@@ -144,3 +144,138 @@ void printBinaryTreeInOrder(BinaryTreeNode* root) {
         printBinaryTreeInOrder(root->right);
     }
 }
+
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+AVLTreeNode* createAVLTreeNode(Word* word_node) {
+    AVLTreeNode* newNode = (AVLTreeNode*)malloc(sizeof(AVLTreeNode));
+    if (newNode != NULL) {
+        newNode->word_node = word_node;
+        newNode->left = NULL;
+        newNode->right = NULL;
+        newNode->height = 1;
+    }
+    return newNode;
+}
+
+int getHeight(AVLTreeNode* node) {
+    if (node == NULL) {
+        return 0;
+    }
+    return node->height;
+}
+
+int getBalanceFactor(AVLTreeNode* node) {
+    if (node == NULL) {
+        return 0;
+    }
+    return getHeight(node->left) - getHeight(node->right);
+}
+
+AVLTreeNode* rotateRight(AVLTreeNode* y) {
+    AVLTreeNode* x = y->left;
+    AVLTreeNode* T2 = x->right;
+
+    x->right = y;
+    y->left = T2;
+
+    y->height = max(getHeight(y->left), getHeight(y->right)) + 1;
+    x->height = max(getHeight(x->left), getHeight(x->right)) + 1;
+
+    return x;
+}
+
+AVLTreeNode* rotateLeft(AVLTreeNode* x) {
+    AVLTreeNode* y = x->right;
+    AVLTreeNode* T2 = y->left;
+
+    y->left = x;
+    x->right = T2;
+
+    x->height = max(getHeight(x->left), getHeight(x->right)) + 1;
+    y->height = max(getHeight(y->left), getHeight(y->right)) + 1;
+
+    return y;
+}
+
+AVLTreeNode* balanceAVLTree(AVLTreeNode* node) {
+    if (node == NULL) {
+        return node;
+    }
+
+    int balance = getBalanceFactor(node);
+
+    // Caso de desequilíbrio à esquerda
+    if (balance > 1) {
+        if (getBalanceFactor(node->left) < 0) {
+            node->left = rotateLeft(node->left);
+        }
+        return rotateRight(node);
+    }
+
+    // Caso de desequilíbrio à direita
+    if (balance < -1) {
+        if (getBalanceFactor(node->right) > 0) {
+            node->right = rotateRight(node->right);
+        }
+        return rotateLeft(node);
+    }
+
+    return node;
+}
+
+AVLTreeNode* insertIntoAVLTree(AVLTreeNode* root, Word* word_node) {
+    if (root == NULL) {
+        return createAVLTreeNode(word_node);
+    }
+
+    if (word_node->frequency < root->word_node->frequency) {
+        root->left = insertIntoAVLTree(root->left, word_node);
+    } else {
+        root->right = insertIntoAVLTree(root->right, word_node);
+    }
+
+    root->height = max(getHeight(root->left), getHeight(root->right)) + 1;
+
+    return balanceAVLTree(root);
+}
+
+AVLTreeNode* findMinAVLTree(AVLTreeNode* root) {
+    if (root == NULL) {
+        return NULL;
+    }
+
+    while (root->left != NULL) {
+        root = root->left;
+    }
+
+    return root;
+}
+
+AVLTreeNode* deleteMinFromAVLTree(AVLTreeNode* root) {
+    if (root == NULL) {
+        return NULL;
+    }
+
+    if (root->left == NULL) {
+        AVLTreeNode* rightChild = root->right;
+        free(root);
+        return rightChild;
+    }
+
+    root->left = deleteMinFromAVLTree(root->left);
+
+    root->height = max(getHeight(root->left), getHeight(root->right)) + 1;
+
+    return balanceAVLTree(root);
+}
+
+void printAVLTreeInOrder(AVLTreeNode* root) {
+    if (root != NULL) {
+        printAVLTreeInOrder(root->left);
+        printf("%s %d\n", root->word_node->word, root->word_node->frequency);
+        printAVLTreeInOrder(root->right);
+    }
+}
