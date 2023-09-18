@@ -32,15 +32,16 @@ typedef struct AVLTreeNode {
     int height;
 } AVLTreeNode;
 
-typedef struct HuffmanNode {
-    Word* word_node;
-    struct HuffmanNode* left;
-    struct HuffmanNode* right;
-} HuffmanNode;
+typedef struct HuffmanTreeNode {
+    char word[MAX_WORD_LENGTH];
+    int frequency;
+    struct HuffmanTreeNode* left;
+    struct HuffmanTreeNode* right;
+} HuffmanTreeNode;
 
-HuffmanNode* insertIntoHuffmanTree(HuffmanNode* root, Word* word_node);
-HuffmanNode* deleteMinFromHuffmanTree(HuffmanNode* root);
-void printHuffmanTree(HuffmanNode* root);
+HuffmanTreeNode* buildHuffmanTree(Word* words[], int word_count);
+void generateHuffmanCodes(HuffmanTreeNode* root, char* code, int depth);
+void printHuffmanTreeInOrder(HuffmanTreeNode* root);
 AVLTreeNode* insertIntoAVLTree(AVLTreeNode* root, Word* word_node);
 AVLTreeNode* deleteMinFromAVLTree(AVLTreeNode* root);
 int getHeight(AVLTreeNode* node);
