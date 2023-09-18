@@ -279,3 +279,63 @@ void printAVLTreeInOrder(AVLTreeNode* root) {
         printAVLTreeInOrder(root->right);
     }
 }
+
+HuffmanNode* createHuffmanNode(Word* word_node) {
+    HuffmanNode* newNode = (HuffmanNode*)malloc(sizeof(HuffmanNode));
+    if (newNode != NULL) {
+        newNode->word_node = word_node;
+        newNode->left = NULL;
+        newNode->right = NULL;
+    }
+    return newNode;
+}
+
+HuffmanNode* insertIntoHuffmanTree(HuffmanNode* root, Word* word_node) {
+    if (root == NULL) {
+        return createHuffmanNode(word_node);
+    }
+
+    if (word_node->frequency < root->word_node->frequency) {
+        root->left = insertIntoHuffmanTree(root->left, word_node);
+    } else {
+        root->right = insertIntoHuffmanTree(root->right, word_node);
+    }
+
+    return root;
+}
+
+HuffmanNode* findMinHuffmanTree(HuffmanNode* root) {
+    if (root == NULL) {
+        return NULL;
+    }
+
+    while (root->left != NULL) {
+        root = root->left;
+    }
+
+    return root;
+}
+
+HuffmanNode* deleteMinFromHuffmanTree(HuffmanNode* root) {
+    if (root == NULL) {
+        return NULL;
+    }
+
+    if (root->left == NULL) {
+        HuffmanNode* rightChild = root->right;
+        free(root);
+        return rightChild;
+    }
+
+    root->left = deleteMinFromHuffmanTree(root->left);
+
+    return root;
+}
+
+void printHuffmanTree(HuffmanNode* root) {
+    if (root != NULL) {
+        printHuffmanTree(root->left);
+        printf("%s %d\n", root->word_node->word, root->word_node->frequency);
+        printHuffmanTree(root->right);
+    }
+}
