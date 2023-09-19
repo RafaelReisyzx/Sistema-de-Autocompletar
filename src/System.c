@@ -349,3 +349,17 @@ void printHuffmanTreeInOrder(HuffmanTreeNode* root) {
         printHuffmanTreeInOrder(root->right);
     }
 }
+
+Word* findWord(HashTable* hash_table, const char* word) {
+    unsigned long hash = hashFunction(word);
+    Word* palavra_atual = hash_table->table[hash];
+    
+    while (palavra_atual != NULL) {
+        if (strcmp(palavra_atual->word, word) == 0) {
+            return palavra_atual;
+        }
+        palavra_atual = palavra_atual->next;
+    }
+    
+    return NULL;
+}
