@@ -8,6 +8,7 @@
 
 #define TABLE_SIZE 300000
 #define MAX_WORD_LENGTH 50
+#define k 20
 
 typedef struct Word {
     char word[MAX_WORD_LENGTH];
@@ -58,6 +59,7 @@ void processFile(HashTable* hash_table, const char* input_file);
 BinaryTreeNode* insertIntoBinaryTree(BinaryTreeNode* root, Word* word_node);
 BinaryTreeNode* deleteMinFromBinaryTree(BinaryTreeNode* root);
 void printBinaryTreeInOrder(BinaryTreeNode* root);
+Word* findWord(HashTable* hash_table, const char* word);
 
 
 
