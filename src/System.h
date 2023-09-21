@@ -8,7 +8,6 @@
 
 #define TABLE_SIZE 300000
 #define MAX_WORD_LENGTH 50
-#define k 20
 
 typedef struct Word {
     char word[MAX_WORD_LENGTH];
@@ -33,16 +32,17 @@ typedef struct AVLTreeNode {
     int height;
 } AVLTreeNode;
 
-typedef struct HuffmanTreeNode {
-    char word[MAX_WORD_LENGTH];
-    int frequency;
-    struct HuffmanTreeNode* left;
-    struct HuffmanTreeNode* right;
-} HuffmanTreeNode;
+typedef struct HuffmanNode {
+    Word* word_node;
+    struct HuffmanNode* left;
+    struct HuffmanNode* right;
+} HuffmanNode;
 
-HuffmanTreeNode* buildHuffmanTree(Word* words[], int word_count);
-void generateHuffmanCodes(HuffmanTreeNode* root, char* code, int depth);
-void printHuffmanTreeInOrder(HuffmanTreeNode* root);
+HuffmanNode* insertIntoHuffmanTree(HuffmanNode* root, Word* word_node);
+HuffmanNode* deleteMinFromHuffmanTree(HuffmanNode* root);
+void printHuffmanTreeInOrder(HuffmanNode* root);
+void destroyHuffmanTree(HuffmanNode* root);
+
 AVLTreeNode* insertIntoAVLTree(AVLTreeNode* root, Word* word_node);
 AVLTreeNode* deleteMinFromAVLTree(AVLTreeNode* root);
 int getHeight(AVLTreeNode* node);
@@ -59,7 +59,6 @@ void processFile(HashTable* hash_table, const char* input_file);
 BinaryTreeNode* insertIntoBinaryTree(BinaryTreeNode* root, Word* word_node);
 BinaryTreeNode* deleteMinFromBinaryTree(BinaryTreeNode* root);
 void printBinaryTreeInOrder(BinaryTreeNode* root);
-Word* findWord(HashTable* hash_table, const char* word);
 
 
 
