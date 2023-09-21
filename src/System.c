@@ -226,7 +226,7 @@ AVLTreeNode* balanceAVLTree(AVLTreeNode* node) {
     return node;
 }
 
-AVLTreeNode* insertIntoAVLTree(AVLTreeNode* root, Word* word_node) {
+    AVLTreeNode* insertIntoAVLTree(AVLTreeNode* root, Word* word_node) {
     if (root == NULL) {
         return createAVLTreeNode(word_node);
     }
@@ -242,7 +242,7 @@ AVLTreeNode* insertIntoAVLTree(AVLTreeNode* root, Word* word_node) {
     return balanceAVLTree(root);
 }
 
-AVLTreeNode* findMinAVLTree(AVLTreeNode* root) {
+    AVLTreeNode* findMinAVLTree(AVLTreeNode* root) {
     if (root == NULL) {
         return NULL;
     }
@@ -254,7 +254,7 @@ AVLTreeNode* findMinAVLTree(AVLTreeNode* root) {
     return root;
 }
 
-AVLTreeNode* deleteMinFromAVLTree(AVLTreeNode* root) {
+    AVLTreeNode* deleteMinFromAVLTree(AVLTreeNode* root) {
     if (root == NULL) {
         return NULL;
     }
