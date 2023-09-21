@@ -3,74 +3,45 @@
 
 int main() {
     HashTable hash_table;
-    
+    int k = 20;
     initializeHashTable(&hash_table);
     loadStopWords(&hash_table, "dataset/stopwords.txt");
     processFile(&hash_table, "dataset/filosofia.txt");
 
     BinaryTreeNode* binaryTreeRoot = NULL;
     AVLTreeNode* avlTreeRoot = NULL;
-    HuffmanTreeNode* huffmanTreeRoot = NULL;
+    HuffmanNode* huffmanTreeRoot = NULL;
     int treeSize = 0;
-
-   Word* frequent_words[k];
 
     for (int i = 0; i < TABLE_SIZE; i++) {
         Word* palavra_atual = hash_table.table[i];
         while (palavra_atual != NULL) {
             if (palavra_atual->frequency > 0) {
-                frequent_words[treeSize] = palavra_atual;
                 binaryTreeRoot = insertIntoBinaryTree(binaryTreeRoot, palavra_atual);
                 avlTreeRoot = insertIntoAVLTree(avlTreeRoot, palavra_atual);
+                huffmanTreeRoot = insertIntoHuffmanTree(huffmanTreeRoot, palavra_atual); // Adicione a palavra à árvore de Huffman
                 treeSize++;
                 if (treeSize > k) {
                     binaryTreeRoot = deleteMinFromBinaryTree(binaryTreeRoot);
                     avlTreeRoot = deleteMinFromAVLTree(avlTreeRoot);
+                    huffmanTreeRoot = deleteMinFromHuffmanTree(huffmanTreeRoot); // Remova a palavra da árvore de Huffman
                     treeSize--;
                 }
             }
             palavra_atual = palavra_atual->next;
         }
     }
-      
-
-    // Ler o arquivo input.txt
-    FILE* input_file = fopen("dataset/input.txt", "r");
-    if (input_file == NULL) {
-        printf("Erro ao abrir o arquivo input.txt.\n");
-        return 1;
-    }
-
-    char search_word[MAX_WORD_LENGTH];
-    while (fscanf(input_file, "%s", search_word) != EOF) {
-        // Processar cada palavra de pesquisa
-        Word* word_node = findWord(&hash_table, search_word);
-        if (word_node != NULL) {
-            frequent_words[treeSize] = word_node;
-            binaryTreeRoot = insertIntoBinaryTree(binaryTreeRoot, word_node);
-            avlTreeRoot = insertIntoAVLTree(avlTreeRoot, word_node);
-            treeSize++;
-            if (treeSize > k) {
-                binaryTreeRoot = deleteMinFromBinaryTree(binaryTreeRoot);
-                avlTreeRoot = deleteMinFromAVLTree(avlTreeRoot);
-                treeSize--;
-            }
-        }
-    }
-
-    fclose(input_file);
-
-    huffmanTreeRoot = buildHuffmanTree(frequent_words, k);
-    char huffmanCode[MAX_WORD_LENGTH];
-    huffmanCode[0] = '\0';
 
     printf("Top %d palavras mais frequentes (Árvore Binária):\n", k);
     printBinaryTreeInOrder(binaryTreeRoot);
 
     printf("\nTop %d palavras mais frequentes (Árvore AVL):\n", k);
     printAVLTreeInOrder(avlTreeRoot);
-    printf("\nÁrvore de Huffman:\n");
-   // printHuffmanTreeInOrder(huffmanTreeRoot);
- generateHuffmanCodes(huffmanTreeRoot, huffmanCode, 0);
+
+    printf("\nTop %d palavras mais frequentes (Árvore de Huffman):\n", k);
+    printHuffmanTreeInOrder(huffmanTreeRoot); 
+
+    destroyHuffmanTree(huffmanTreeRoot); 
+
     return 0;
 }
